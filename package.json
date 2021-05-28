@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "next": "^10.2.3",
     "next-auth": "^3.23.0",
     "pg": "^8.6.0",
