@@ -4,9 +4,11 @@ import NoteIcon from '@material-ui/icons/Note'
 import WebIcon from '@material-ui/icons/Web'
 import PersonIcon from '@material-ui/icons/Person'
 
-export default function BottomNav() {
+export default function BottomNav({ navHighlight, setNavHighlight }) {
   return (
     <BottomNavigation
+      value={navHighlight}
+      onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
       showLabels
     >
       <BottomNavigationAction label="Posts" icon={<NoteIcon />} />
