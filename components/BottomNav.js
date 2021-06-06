@@ -1,3 +1,4 @@
+import AppBar from '@material-ui/core/AppBar'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import NoteIcon from '@material-ui/icons/Note'
@@ -6,14 +7,16 @@ import PersonIcon from '@material-ui/icons/Person'
 
 export default function BottomNav({ navHighlight, setNavHighlight }) {
   return (
-    <BottomNavigation
-      value={navHighlight}
-      onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
-      showLabels
-    >
-      <BottomNavigationAction label="Posts" icon={<NoteIcon />} />
-      <BottomNavigationAction label="Feed" icon={<WebIcon />} />
-      <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
-    </BottomNavigation>
+    <AppBar position="fixed" style={{ top: 'auto', bottom: 0 }}>
+      <BottomNavigation
+        value={navHighlight}
+        onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
+        showLabels
+      >
+        <BottomNavigationAction label="Posts" icon={<NoteIcon />} />
+        <BottomNavigationAction label="Feed" icon={<WebIcon />} />
+        <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
+      </BottomNavigation>
+    </AppBar>
   )
 }
