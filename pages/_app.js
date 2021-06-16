@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client'
 import { useState } from 'react'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import Container from '@material-ui/core/Container'
@@ -14,6 +15,7 @@ const navIndex = {
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter()
+  const [ session, loading ] = useSession()
   const [navHighlight, setNavHighlight] = useState(navIndex[router.pathname.split('/')[1]])
   const largeDevice = useMediaQuery('(min-width:1280px)')
 
@@ -21,7 +23,7 @@ export default function MyApp({ Component, pageProps }) {
     <>
       {largeDevice && <SideMenu navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
       <Container maxWidth="sm">
-        <Component {...pageProps} />
+        <Component {...pageProps} session={session} loading={loading} />
       </Container>
       {!largeDevice && <BottomNav navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
     </>
