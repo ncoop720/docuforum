@@ -9,6 +9,7 @@ import BottomNav from '../components/BottomNav'
 
 const navIndex = {
   'feed': 0,
+  'post': 1,
   'posts': 1,
   'users': 2
 }
