@@ -13,10 +13,21 @@ export default function Nav({ children }) {
   const [navHighlight, setNavHighlight] = useState(navIndex[router.pathname.split('/')[1]])
   const largeDevice = useMediaQuery('(min-width:960px)')
 
+  function containerOffset() {
+    if (largeDevice) return '175px'
+    else return '0px'
+  }
+
+  const containerStyle = {
+    marginLeft: containerOffset(),
+  }
+
   return (
     <>
       {largeDevice && <SideMenu navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
-      {children}
+      <div style={containerStyle}>
+        {children}
+      </div>
       {!largeDevice && <BottomNav navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
     </>
   )
