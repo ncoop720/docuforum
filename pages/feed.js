@@ -1,5 +1,9 @@
+import Nav from '../components/Nav'
+
 export default function Feed() {
   return (
-    <div>Feed</div>
+    <Nav>
+      <div>Feed</div>
+    </Nav>
   )
 }
