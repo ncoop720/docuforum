@@ -14,7 +14,7 @@ export default function Posts({ session, loading }) {
   return (
     <Nav>
       <div>
-        <IconButton onClick={() => router.push('/post/new')}>
+        <IconButton onClick={() => router.push('/post/edit/new')}>
           <AddIcon />
         </IconButton>
       </div>
