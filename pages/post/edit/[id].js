@@ -6,23 +6,30 @@ import { convertToRaw, EditorState } from 'draft-js'
 import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/client'
 import { useState } from 'react'
+import PostSection from '../../../components/PostSection'
 
 export async function getServerSideProps({ req, query }) {
   const session = await getSession({ req })
   if (!session) return { redirect: { destination: '/api/auth/signin' } }
   const { id } = query
+
   if (id === 'new')
     return {
       props: {
-        initialPost: [ convertToRaw(EditorState.createEmpty().getCurrentContent()) ]
+        initialPostSections: [
+          {
+            content: convertToRaw(EditorState.createEmpty().getCurrentContent()),
+            id: 0,
+            type: 'text'
+          }
+        ]
       }
     }
 }
 
-export default function editPost({ initialPost }) {
+export default function editPost({ initialPostSections }) {
   const router = useRouter()
-  const { id } = router.query
-  const [post, setPost] = useState(initialPost)
+  const [postSections, setPostSections] = useState(initialPostSections)
   const containerStyle = { padding: '10px' }
 
   return (
@@ -35,7 +42,16 @@ export default function editPost({ initialPost }) {
         </Toolbar>
       </AppBar>
       <div style={containerStyle}>
-        edit post {id}
+        {postSections.map(({ content, id, type }) => {
+          return (
+            <PostSection
+              content={content}
+              key={id}
+              type={type}
+              setPostSections={setPostSections}
+            />
+          )
+        })}
       </div>
     </>
   )
