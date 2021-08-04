@@ -18,14 +18,10 @@ export default function Nav({ children }) {
     else return '0px'
   }
 
-  const containerStyle = {
-    marginLeft: containerOffset(),
-  }
-
   return (
     <>
       {largeDevice && <SideMenu navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
-      <div style={containerStyle}>
+      <div style={{ marginLeft: containerOffset() }}>
         {children}
       </div>
       {!largeDevice && <BottomNav navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
