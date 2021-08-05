@@ -1,6 +1,8 @@
 import AppBar from '@material-ui/core/AppBar'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
+import EditIcon from '@material-ui/icons/Edit'
+import PageviewIcon from '@material-ui/icons/Pageview'
 
 export default function EditNav({ navHighlight, setNavHighlight }) {
   return (
@@ -10,8 +12,8 @@ export default function EditNav({ navHighlight, setNavHighlight }) {
           onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
           showLabels
       >
-        <BottomNavigationAction label="Edit" icon={<div />} />
-        <BottomNavigationAction label="Preview" icon={<div />} />
+        <BottomNavigationAction label="Edit" icon={<EditIcon />} />
+        <BottomNavigationAction label="Preview" icon={<PageviewIcon />} />
       </BottomNavigation>
     </AppBar>
   )

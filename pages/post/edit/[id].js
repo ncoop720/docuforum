@@ -28,10 +28,10 @@ export default function editPost({ initialCode }) {
   }
 
   const containerStyle = {
-    display: 'flex', height: 'calc(95vh - 64px)', justifyContent: 'space-around', padding: '10px'
+    display: 'flex', height: 'calc(95vh - 64px)', justifyContent: 'space-around', padding: '10px 0px'
   }
 
-  const subContainerStyle = { width: subContainerWidth() }
+  const subContainerStyle = { width: subContainerWidth(), overflowX: 'hidden' }
 
   return (
     <>
@@ -50,10 +50,19 @@ export default function editPost({ initialCode }) {
               defaultValue={code}
               height='100%'
               onChange={newCode => setCode(newCode)}
+              options={{
+                minimap: {
+                  enabled: false
+                },
+                tabSize: 2,
+                wordWrap: 'bounded'
+              }}
             />
           </div>}
         {(largeDevice || navHighlight === 1) &&
-          <div id="preview-container" style={subContainerStyle} />}
+          <div id="preview-container" style={subContainerStyle}>
+            <iframe srcDoc={code} style={{ border: '0px', height: '100%', width: '100%' }} />
+          </div>}
       </div>
       {!largeDevice && <EditNav navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
     </>
