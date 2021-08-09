@@ -28,10 +28,15 @@ export default function editPost({ initialCode }) {
   }
 
   const containerStyle = {
-    display: 'flex', height: 'calc(95vh - 64px)', justifyContent: 'space-around', padding: '10px 0px'
+    display: 'flex',
+    height: 'calc(95vh - 64px)',
+    justifyContent: 'space-around',
+    paddingTop: '10px'
   }
 
-  const subContainerStyle = { width: subContainerWidth(), overflowX: 'hidden' }
+  const subContainerStyle = { width: subContainerWidth() }
+  const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
+  const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
 
   return (
     <>
@@ -43,26 +48,24 @@ export default function editPost({ initialCode }) {
         </Toolbar>
       </AppBar>
       <div style={containerStyle}>
-        {(largeDevice || navHighlight === 0) &&
-          <div id="editor-container" style={subContainerStyle}>
-            <Editor
-              defaultLanguage="html"
-              defaultValue={code}
-              height='100%'
-              onChange={newCode => setCode(newCode)}
-              options={{
-                minimap: {
-                  enabled: false
-                },
-                tabSize: 2,
-                wordWrap: 'bounded'
-              }}
-            />
-          </div>}
-        {(largeDevice || navHighlight === 1) &&
-          <div id="preview-container" style={subContainerStyle}>
-            <iframe srcDoc={code} style={{ border: '0px', height: '100%', width: '100%' }} />
-          </div>}
+        <div id="editor-container" style={{ ...subContainerStyle, ...editorShow}}>
+          <Editor
+            defaultLanguage="html"
+            defaultValue={code}
+            height='100%'
+            onChange={newCode => setCode(newCode)}
+            options={{
+              minimap: {
+                enabled: false
+              },
+              tabSize: 2,
+              wordWrap: 'bounded'
+            }}
+          />
+        </div>
+        <div id="preview-container" style={{ ...subContainerStyle, ...previewShow }} >
+          <iframe srcDoc={code} style={{ border: '0px', height: '100%', width: '100%' }} />
+        </div>
       </div>
       {!largeDevice && <EditNav navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
     </>
