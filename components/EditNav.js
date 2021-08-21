@@ -2,7 +2,6 @@ import AppBar from '@material-ui/core/AppBar'
 import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import EditIcon from '@material-ui/icons/Edit'
-import PageviewIcon from '@material-ui/icons/Pageview'
 import PublishIcon from '@material-ui/icons/Publish'
 
 export default function EditNav({ navHighlight, setNavHighlight }) {

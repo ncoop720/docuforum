@@ -11,8 +11,7 @@ import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/client'
 import { useState } from 'react'
 import EditNav from '../../../components/EditNav'
-import PostSection from '../../../components/PostSection'
-import TextPostSection from '../../../components/TextPostSection'
+import PostEditor from '../../../components/PostEditor'
 
 export async function getServerSideProps({ req, query }) {
   const session = await getSession({ req })
@@ -37,33 +36,44 @@ export async function getServerSideProps({ req, query }) {
 }
 
 export default function editPost({ initialPost }) {
+  const largeDevice = useMediaQuery('(min-width: 960px)')
+  const midDevice = useMediaQuery('(min-width: 600px')
   const router = useRouter()
-  const [post, setPost] = useState(initialPost)
   const [navHighlight, setNavHighlight] = useState(0)
-  const largeDevice = useMediaQuery('(min-width:960px)')
+  const [post, setPost] = useState(initialPost)
 
-  function subContainerWidth() {
-    if (largeDevice) return '48%'
-    else return '100%'
+  function containerHeight() {
+    if (largeDevice) return 'calc(100vh - 64px)'
+    else if (midDevice && !largeDevice) return 'calc(100vh - 120px)'
+    else return 'calc(100vh - 112px)'
   }
 
   const containerStyle = {
     display: 'flex',
-    height: 'calc(95vh - 64px)',
-    justifyContent: 'space-around',
-    paddingTop: '10px'
+    height: containerHeight(),
+    justifyContent: 'space-around'
   }
 
-  const subContainerStyle = { width: subContainerWidth() }
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
+  const subContainerStyle = { width: largeDevice ? '50%' : '100%' }
 
-  function handleAdd() {
-    console.log('Adding Section')
+  function handleAddSection() {
+    console.log('Adding section')
   }
 
-  function handleSave() {
-    console.log('Saving Post')
+  function handleMoveSection(departureSectionIndex, direction) {
+    console.log(`Moving section ${departureSectionIndex} ${direction}`)
+  }
+
+  function handleSavePost() {
+    console.log('Saving post')
+  }
+
+  function handleTitleChange(e) {
+    const newPost = { ...post }
+    newPost.title = e.target.value
+    setPost(newPost)
   }
 
   return (
@@ -73,30 +83,20 @@ export default function editPost({ initialPost }) {
           <IconButton edge="start" onClick={() => router.back()}>
             <KeyboardBackspaceIcon />
           </IconButton>
-          <TextField defaultValue={post.title} label="Title" variant="filled" />
-          <IconButton edge="end" onClick={() => handleAdd()}>
+          <TextField defaultValue={post.title} label="Title" onChange={e => handleTitleChange(e)} variant="filled" />
+          <IconButton edge="end" onClick={() => handleAddSection()}>
             <AddIcon />
           </IconButton>
-          <IconButton edge="end" onClick={() => handleSave()}>
+          <IconButton edge="end" onClick={() => handleSavePost()}>
             <SaveIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
       <div style={containerStyle}>
-        <div id="editor-container" style={{ ...subContainerStyle, ...editorShow}}>
-          {post.sections.map(({ id, type }, sectionIndex) => {
-            return (
-              <PostSection key={id}>
-                {
-                  {
-                    'text': <TextPostSection post={post} setPost={setPost} sectionIndex={sectionIndex} />
-                  }[type]
-                }
-              </PostSection>
-            )
-          })}
+        <div id="editor-subcontainer" style={{ ...subContainerStyle, ...editorShow}}>
+          <PostEditor pageAPI={{ handleMoveSection, setPost }} post={post} />
         </div>
-        <div id="preview-container" style={{ ...subContainerStyle, ...previewShow }} />
+        <div id="preview-subcontainer" style={{ ...subContainerStyle, ...previewShow }} />
       </div>
       {!largeDevice && <EditNav navHighlight={navHighlight} setNavHighlight={setNavHighlight} />}
     </>
