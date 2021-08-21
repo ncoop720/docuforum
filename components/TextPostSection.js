@@ -1,10 +1,23 @@
-import { convertFromRaw, Editor, EditorState } from 'draft-js'
+import { convertFromRaw, convertToRaw, Editor, EditorState } from 'draft-js'
 import { useState } from 'react'
 
-export default function TextPostSection({ content }) {
+export default function TextPostSection({ post, setPost, sectionIndex }) {
   const [editorState, setEditorState] = useState(
-    EditorState.createWithContent(convertFromRaw(content))
+    EditorState.createWithContent(convertFromRaw(post.sections[sectionIndex].content))
   )
 
-  return <Editor editorKey="editor" editorState={editorState} onChange={setEditorState} />
+  function updateContent(newContent) {
+    setEditorState(newContent)
+    const newPost = { ...post }
+    newPost.sections[sectionIndex].content = convertToRaw(newContent.getCurrentContent())
+    setPost(newPost)
+  }
+
+  return (
+    <Editor
+      editorKey="editor"
+      editorState={editorState}
+      onChange={newContent => updateContent(newContent)}
+    />
+  )
 }

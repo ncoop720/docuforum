@@ -3,6 +3,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation'
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import EditIcon from '@material-ui/icons/Edit'
 import PageviewIcon from '@material-ui/icons/Pageview'
+import PublishIcon from '@material-ui/icons/Publish'
 
 export default function EditNav({ navHighlight, setNavHighlight }) {
   return (
@@ -13,7 +14,7 @@ export default function EditNav({ navHighlight, setNavHighlight }) {
           showLabels
       >
         <BottomNavigationAction label="Edit" icon={<EditIcon />} />
-        <BottomNavigationAction label="Preview" icon={<PageviewIcon />} />
+        <BottomNavigationAction label="Publish" icon={<PublishIcon />} />
       </BottomNavigation>
     </AppBar>
   )

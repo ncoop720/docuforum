@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import AddIcon from '@material-ui/icons/Add'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import SaveIcon from '@material-ui/icons/Save'
 import { convertToRaw, EditorState } from 'draft-js'
@@ -37,8 +38,7 @@ export async function getServerSideProps({ req, query }) {
 
 export default function editPost({ initialPost }) {
   const router = useRouter()
-  const [title, setTitle] = useState(initialPost.title)
-  const [sections, setSections] = useState(initialPost.sections)
+  const [post, setPost] = useState(initialPost)
   const [navHighlight, setNavHighlight] = useState(0)
   const largeDevice = useMediaQuery('(min-width:960px)')
 
@@ -58,6 +58,10 @@ export default function editPost({ initialPost }) {
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
 
+  function handleAdd() {
+    console.log('Adding Section')
+  }
+
   function handleSave() {
     console.log('Saving Post')
   }
@@ -69,20 +73,23 @@ export default function editPost({ initialPost }) {
           <IconButton edge="start" onClick={() => router.back()}>
             <KeyboardBackspaceIcon />
           </IconButton>
+          <TextField defaultValue={post.title} label="Title" variant="filled" />
+          <IconButton edge="end" onClick={() => handleAdd()}>
+            <AddIcon />
+          </IconButton>
           <IconButton edge="end" onClick={() => handleSave()}>
             <SaveIcon />
           </IconButton>
-          <TextField defaultValue={title} label="Title" variant="filled" />
         </Toolbar>
       </AppBar>
       <div style={containerStyle}>
         <div id="editor-container" style={{ ...subContainerStyle, ...editorShow}}>
-          {sections.map(({ content, id, type }) => {
+          {post.sections.map(({ id, type }, sectionIndex) => {
             return (
               <PostSection key={id}>
                 {
                   {
-                    'text': <TextPostSection content={content} />
+                    'text': <TextPostSection post={post} setPost={setPost} sectionIndex={sectionIndex} />
                   }[type]
                 }
               </PostSection>
