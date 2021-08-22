@@ -13,7 +13,7 @@ export default function PostSection({ children, handleMoveSection, sectionIndex 
           <ArrowDropDownIcon />
         </IconButton>
       </div>
-      <div style={{ display: 'inline-block', verticalAlign: 'top', width: 'calc(100vw - 50px)' }}>
+      <div style={{ display: 'inline-block', verticalAlign: 'top', width: 'calc(100% - 50px)' }}>
         {children}
       </div>
     </>
