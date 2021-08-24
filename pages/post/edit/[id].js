@@ -25,7 +25,7 @@ export default function editPost({ initialPost }) {
   const [post, setPost] = useState(initialPost)
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
-  const subContainerStyle = { width: largeDevice ? '50%' : '100%' }
+  const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
 
   const containerStyle = {
     display: 'flex',
