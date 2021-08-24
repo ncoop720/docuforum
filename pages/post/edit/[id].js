@@ -26,6 +26,7 @@ export default function editPost({ initialPost }) {
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
+  const editorSubContainerStyle = { ...subContainerStyle, ...editorShow, overflowY: 'scroll' }
 
   const containerStyle = {
     display: 'flex',
@@ -40,7 +41,12 @@ export default function editPost({ initialPost }) {
           <IconButton edge="start" onClick={() => router.back()}>
             <KeyboardBackspaceIcon />
           </IconButton>
-          <TextField defaultValue={post.title} label="Title" onChange={e => updateTitle(e)} variant="filled" />
+          <TextField
+            defaultValue={post.title}
+            label="Title"
+            onChange={e => updateTitle(e)}
+            variant="filled"
+          />
           <IconButton edge="end" onClick={() => addPostSection()}>
             <AddIcon />
           </IconButton>
@@ -50,7 +56,7 @@ export default function editPost({ initialPost }) {
         </Toolbar>
       </AppBar>
       <div style={containerStyle}>
-        <div id="editor-subcontainer" style={{ ...subContainerStyle, ...editorShow}}>
+        <div id="editor-subcontainer" style={editorSubContainerStyle}>
           {post.sections.map(({ id, type }, sectionIndex) => {
             return (
               <PostSection key={id} movePostSection={movePostSection} sectionIndex={sectionIndex}>
