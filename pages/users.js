@@ -1,17 +1,19 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { getSession } from 'next-auth/client'
 import Nav from '../components/Nav'
 
-export default function Users({ session, loading }) {
+export default function Users() {
   const router = useRouter()
-
-  useEffect(() => {
-    if (!loading && !session) router.push('/api/auth/signin')
-  }, [loading])
 
   return (
     <Nav>
       <div>Users</div>
     </Nav>
   )
+}
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req })
+  if (!session) return { redirect: { destination: '/api/auth/signin' } }
+  return { props: {} }
 }
