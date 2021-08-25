@@ -5,7 +5,6 @@ import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import PublishIcon from '@material-ui/icons/Publish'
@@ -17,7 +16,7 @@ import { useState } from 'react'
 import PostSection from '../../../components/PostSection'
 import PostSectionText from '../../../components/PostSectionText'
 
-export default function editPost({ initialPost }) {
+export default function PostEdit({ initialPost }) {
   const largeDevice = useMediaQuery('(min-width: 960px)')
   const midDevice = useMediaQuery('(min-width: 600px')
   const router = useRouter()
@@ -44,12 +43,9 @@ export default function editPost({ initialPost }) {
           <TextField
             defaultValue={post.title}
             label="Title"
-            onChange={e => updateTitle(e)}
+            onChange={updateTitle}
             variant="filled"
           />
-          <IconButton edge="end" onClick={() => addPostSection()}>
-            <AddIcon />
-          </IconButton>
           <IconButton edge="end" onClick={() => savePost()}>
             <SaveIcon />
           </IconButton>
@@ -59,7 +55,7 @@ export default function editPost({ initialPost }) {
         <div id="editor-subcontainer" style={editorSubContainerStyle}>
           {post.sections.map(({ id, type }, sectionIndex) => {
             return (
-              <PostSection key={id} movePostSection={movePostSection} sectionIndex={sectionIndex}>
+              <PostSection key={id} sectionIndex={sectionIndex} sections={post.sections}>
                 {
                   {
                     'text': (
@@ -88,18 +84,10 @@ export default function editPost({ initialPost }) {
     </>
   )
 
-  function addPostSection() {
-    console.log('Adding post section')
-  }
-
   function containerHeight() {
     if (largeDevice) return 'calc(100vh - 64px)'
-    else if (midDevice && !largeDevice) return 'calc(100vh - 120px)'
+    else if (midDevice) return 'calc(100vh - 120px)'
     else return 'calc(100vh - 112px)'
-  }
-
-  function movePostSection(departureSectionIndex, direction) {
-    console.log(`Moving post section (index ${departureSectionIndex}) ${direction}`)
   }
 
   function savePost() {
