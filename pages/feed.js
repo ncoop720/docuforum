@@ -1,8 +1,8 @@
 import Nav from '../components/Nav'
 
-export default function Feed() {
+export default function Feed({ AppAPI }) {
   return (
-    <Nav>
+    <Nav AppAPI={AppAPI}>
       <div>Feed</div>
     </Nav>
   )

@@ -42,10 +42,6 @@ export default function PostSection({ children, sectionIndex, sections }) {
     </Card>
   )
 
-  function openMenu(e) {
-    setAnchorEl(e.currentTarget)
-  }
-
   function addPostSectionAbove() {
     console.log('Adding post section above')
     setAnchorEl(null)
@@ -69,5 +65,9 @@ export default function PostSection({ children, sectionIndex, sections }) {
   function movePostSectionUp() {
     console.log('Moving post section up')
     setAnchorEl(null)
+  }
+
+  function openMenu(e) {
+    setAnchorEl(e.currentTarget)
   }
 }

@@ -4,24 +4,20 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import EditIcon from '@material-ui/icons/Edit'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import PublishIcon from '@material-ui/icons/Publish'
 import SaveIcon from '@material-ui/icons/Save'
 import { convertToRaw, EditorState } from 'draft-js'
-import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/client'
 import { useState } from 'react'
 import PostSection from '../../../components/PostSection'
 import PostSectionText from '../../../components/PostSectionText'
 
-export default function PostEdit({ initialPost }) {
-  const largeDevice = useMediaQuery('(min-width: 960px)')
-  const midDevice = useMediaQuery('(min-width: 600px')
-  const router = useRouter()
-  const [navHighlight, setNavHighlight] = useState(0)
+export default function PostEdit({ AppAPI, initialPost }) {
+  const { midDevice, largeDevice, router } = AppAPI
   const [post, setPost] = useState(initialPost)
+  const [navHighlight, setNavHighlight] = useState(0)
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }

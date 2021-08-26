@@ -1,12 +1,9 @@
-import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/client'
 import Nav from '../components/Nav'
 
-export default function Users() {
-  const router = useRouter()
-
+export default function Users({ AppAPI }) {
   return (
-    <Nav>
+    <Nav AppAPI={AppAPI}>
       <div>Users</div>
     </Nav>
   )

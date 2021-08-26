@@ -5,21 +5,18 @@ import Drawer from '@material-ui/core/Drawer'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import NoteIcon from '@material-ui/icons/Note'
 import PersonIcon from '@material-ui/icons/Person'
 import WebIcon from '@material-ui/icons/Web'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 const navIndex = {
   'feed': 0, 'post': 1, 'posts': 1, 'users': 2
 }
 
-export default function Nav({ children }) {
-  const router = useRouter()
+export default function Nav({ AppAPI, children }) {
+  const { largeDevice, router } = AppAPI
   const [navHighlight, setNavHighlight] = useState(navIndex[router.pathname.split('/')[1]])
-  const largeDevice = useMediaQuery('(min-width:960px)')
 
   function containerOffset() {
     if (largeDevice) return '175px'
