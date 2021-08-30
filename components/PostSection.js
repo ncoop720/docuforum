@@ -6,7 +6,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import TextFieldsIcon from '@material-ui/icons/TextFields'
 import { useState } from 'react'
 
-export default function PostSection({ children, sectionIndex, sections }) {
+export default function PostSection({ children, post, sectionIndex, sections, setPost }) {
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (
@@ -50,8 +50,10 @@ export default function PostSection({ children, sectionIndex, sections }) {
   )
 
   function deletePostSection() {
-    console.log('Deleting post section')
     setAnchorEl(null)
+    const newPost = { ...post }
+    newPost.sections.splice(sectionIndex, 1)
+    setPost(newPost)
   }
 
   function movePostSectionDown() {

@@ -62,7 +62,12 @@ export default function PostEdit({ AppAPI, initialPost }) {
                   setNewId={setNewId}
                   setPost={setPost}
                 />
-                <PostSection sectionIndex={sectionIndex} sections={post.sections}>
+                <PostSection
+                  post={post}
+                  sectionIndex={sectionIndex}
+                  sections={post.sections}
+                  setPost={setPost}
+                >
                   {
                     {
                       'text': (
