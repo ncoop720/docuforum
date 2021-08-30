@@ -27,6 +27,12 @@ export default function PostSection({ children, post, sectionIndex, sections, se
           >
             <MenuItem
               disabled={sections.length <= 1 || sectionIndex === 0}
+              onClick={movePostSectionToTop}
+            >
+              Move to Top
+            </MenuItem>
+            <MenuItem
+              disabled={sections.length <= 1 || sectionIndex === 0}
               onClick={movePostSectionUp}
             >
               Move Up
@@ -36,6 +42,12 @@ export default function PostSection({ children, post, sectionIndex, sections, se
               onClick={movePostSectionDown}
             >
               Move Down
+            </MenuItem>
+            <MenuItem
+              disabled={sections.length <= 1 || sectionIndex === sections.length - 1}
+              onClick={movePostSectionToBottom}
+            >
+              Move to Bottom
             </MenuItem>
             <MenuItem disabled={sections.length <= 1} onClick={deletePostSection}>
               Delete Section
@@ -57,12 +69,38 @@ export default function PostSection({ children, post, sectionIndex, sections, se
   }
 
   function movePostSectionDown() {
-    console.log('Adding post section down')
     setAnchorEl(null)
+    const newPost = { ...post }
+    const tmp = newPost.sections[sectionIndex]
+    newPost.sections[sectionIndex] = newPost.sections[sectionIndex + 1]
+    newPost.sections[sectionIndex + 1] = tmp
+    setPost(newPost)
+  }
+
+  function movePostSectionToBottom() {
+    setAnchorEl(null)
+    const newPost = { ...post }
+    const sectionToMove = newPost.sections[sectionIndex]
+    newPost.sections.splice(sectionIndex, 1)
+    newPost.sections.push(sectionToMove)
+    setPost(newPost)
+  }
+
+  function movePostSectionToTop() {
+    setAnchorEl(null)
+    const newPost = { ...post }
+    const sectionToMove = newPost.sections[sectionIndex]
+    newPost.sections.splice(sectionIndex, 1)
+    newPost.sections.unshift(sectionToMove)
+    setPost(newPost)
   }
 
   function movePostSectionUp() {
-    console.log('Moving post section up')
     setAnchorEl(null)
+    const newPost = { ...post }
+    const tmp = newPost.sections[sectionIndex]
+    newPost.sections[sectionIndex] = newPost.sections[sectionIndex - 1]
+    newPost.sections[sectionIndex - 1] = tmp
+    setPost(newPost)
   }
 }
