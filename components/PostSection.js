@@ -16,7 +16,7 @@ export default function PostSection({ children, sectionIndex, sections }) {
           <TextFieldsIcon />
         </div>
         <div style={{ display: 'inline-block', float: 'right' }}>
-          <IconButton onClick={openMenu}>
+          <IconButton onClick={e => setAnchorEl(e.currentTarget)}>
             <MoreVertIcon />
           </IconButton>
           <Menu
@@ -25,14 +25,21 @@ export default function PostSection({ children, sectionIndex, sections }) {
             onClose={() => setAnchorEl(null)}
             open={Boolean(anchorEl)}
           >
-            <MenuItem onClick={addPostSectionAbove}>Add Section Above</MenuItem>
-            <MenuItem onClick={addPostSectionBelow}>Add Section Below</MenuItem>
-            {sections.length > 1 && sectionIndex != 0 &&
-              <MenuItem onClick={movePostSectionUp}>Move Up</MenuItem>}
-            {sections.length > 1 && sectionIndex != sections.length - 1 &&
-              <MenuItem onClick={movePostSectionDown}>Move Down</MenuItem>}
-            {sections.length > 1 &&
-              <MenuItem onClick={deletePostSection}>Delete Section</MenuItem>}
+            <MenuItem
+              disabled={sections.length <= 1 || sectionIndex === 0}
+              onClick={movePostSectionUp}
+            >
+              Move Up
+            </MenuItem>
+            <MenuItem
+              disabled={sections.length <= 1 || sectionIndex === sections.length - 1}
+              onClick={movePostSectionDown}
+            >
+              Move Down
+            </MenuItem>
+            <MenuItem disabled={sections.length <= 1} onClick={deletePostSection}>
+              Delete Section
+            </MenuItem>
           </Menu>
         </div>
       </div>
@@ -41,16 +48,6 @@ export default function PostSection({ children, sectionIndex, sections }) {
       </div>
     </Card>
   )
-
-  function addPostSectionAbove() {
-    console.log('Adding post section above')
-    setAnchorEl(null)
-  }
-
-  function addPostSectionBelow() {
-    console.log('Adding post section below')
-    setAnchorEl(null)
-  }
 
   function deletePostSection() {
     console.log('Deleting post section')
@@ -65,9 +62,5 @@ export default function PostSection({ children, sectionIndex, sections }) {
   function movePostSectionUp() {
     console.log('Moving post section up')
     setAnchorEl(null)
-  }
-
-  function openMenu(e) {
-    setAnchorEl(e.currentTarget)
   }
 }

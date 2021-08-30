@@ -71,9 +71,21 @@ export default function Nav({ AppAPI, children }) {
             showLabels
             value={navHighlight}
           >
-            <BottomNavigationAction icon={<WebIcon />} label="Feed" onClick={() => router.push('/feed')} />
-            <BottomNavigationAction icon={<NoteIcon />} label="Posts" onClick={() => router.push('/posts')} />
-            <BottomNavigationAction icon={<PersonIcon />} label="Users" onClick={() => router.push('/users')} />
+            <BottomNavigationAction
+              icon={<WebIcon />}
+              label="Feed"
+              onClick={() => router.push('/feed')}
+            />
+            <BottomNavigationAction
+              icon={<NoteIcon />}
+              label="Posts"
+              onClick={() => router.push('/posts')}
+            />
+            <BottomNavigationAction
+              icon={<PersonIcon />}
+              label="Users"
+              onClick={() => router.push('/users')}
+            />
           </BottomNavigation>
         </AppBar>
       )}

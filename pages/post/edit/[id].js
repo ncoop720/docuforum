@@ -10,14 +10,17 @@ import PublishIcon from '@material-ui/icons/Publish'
 import SaveIcon from '@material-ui/icons/Save'
 import { convertToRaw, EditorState } from 'draft-js'
 import { getSession } from 'next-auth/client'
+import React from 'react'
 import { useState } from 'react'
 import PostSection from '../../../components/PostSection'
+import PostSectionAdd from '../../../components/PostSectionAdd'
 import PostSectionText from '../../../components/PostSectionText'
 
 export default function PostEdit({ AppAPI, initialPost }) {
   const { midDevice, largeDevice, router } = AppAPI
-  const [post, setPost] = useState(initialPost)
   const [navHighlight, setNavHighlight] = useState(0)
+  const [post, setPost] = useState(initialPost)
+  const [newId, setNewId] = useState(Math.max(post.sections.map(s => s.id)) + 1)
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
@@ -51,17 +54,37 @@ export default function PostEdit({ AppAPI, initialPost }) {
         <div id="editor-subcontainer" style={editorSubContainerStyle}>
           {post.sections.map(({ id, type }, sectionIndex) => {
             return (
-              <PostSection key={id} sectionIndex={sectionIndex} sections={post.sections}>
-                {
+              <React.Fragment key={id}>
+                <PostSectionAdd
+                  newId={newId}
+                  post={post}
+                  sectionIndex={sectionIndex}
+                  setNewId={setNewId}
+                  setPost={setPost}
+                />
+                <PostSection sectionIndex={sectionIndex} sections={post.sections}>
                   {
-                    'text': (
-                      <PostSectionText post={post} sectionIndex={sectionIndex} setPost={setPost} />
-                    )
-                  }[type]
-                }
-              </PostSection>
+                    {
+                      'text': (
+                        <PostSectionText
+                          post={post}
+                          sectionIndex={sectionIndex}
+                          setPost={setPost}
+                        />
+                      )
+                    }[type]
+                  }
+                </PostSection>
+              </React.Fragment>
             )
           })}
+          <PostSectionAdd
+            newId={newId}
+            post={post}
+            sectionIndex={post.sections.length}
+            setNewId={setNewId}
+            setPost={setPost}
+          />
         </div>
         <div id="preview-subcontainer" style={{ ...subContainerStyle, ...previewShow }} />
       </div>
