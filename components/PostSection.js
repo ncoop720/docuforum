@@ -10,7 +10,7 @@ export default function PostSection({ children, post, sectionIndex, sections, se
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (
-    <Card style={{ marginBottom: '5px', padding: '5px' }}>
+    <Card style={{ padding: '5px' }}>
       <div>
         <div style={{ display: 'inline-block', lineHeight: '48px' }}>
           <TextFieldsIcon />

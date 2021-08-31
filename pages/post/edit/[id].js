@@ -10,8 +10,7 @@ import PublishIcon from '@material-ui/icons/Publish'
 import SaveIcon from '@material-ui/icons/Save'
 import { convertToRaw, EditorState } from 'draft-js'
 import { getSession } from 'next-auth/client'
-import React from 'react'
-import { useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import PostSection from '../../../components/PostSection'
 import PostSectionAdd from '../../../components/PostSectionAdd'
 import PostSectionText from '../../../components/PostSectionText'
@@ -31,6 +30,11 @@ export default function PostEdit({ AppAPI, initialPost }) {
     height: containerHeight(),
     justifyContent: 'space-around'
   }
+
+  useEffect(() => {
+    if (post.sections[0].type === 'text')
+      document.getElementsByClassName('public-DraftEditor-content')[0].focus()
+  }, [])
 
   return (
     <>
@@ -54,7 +58,7 @@ export default function PostEdit({ AppAPI, initialPost }) {
         <div id="editor-subcontainer" style={editorSubContainerStyle}>
           {post.sections.map(({ id, type }, sectionIndex) => {
             return (
-              <React.Fragment key={id}>
+              <Fragment key={id}>
                 <PostSectionAdd
                   newId={newId}
                   post={post}
@@ -80,7 +84,7 @@ export default function PostEdit({ AppAPI, initialPost }) {
                     }[type]
                   }
                 </PostSection>
-              </React.Fragment>
+              </Fragment>
             )
           })}
           <PostSectionAdd
