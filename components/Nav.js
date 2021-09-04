@@ -10,9 +10,7 @@ import PersonIcon from '@material-ui/icons/Person'
 import WebIcon from '@material-ui/icons/Web'
 import { useState } from 'react'
 
-const navIndex = {
-  'feed': 0, 'post': 1, 'posts': 1, 'users': 2
-}
+const navIndex = { 'feed': 0, 'post': 1, 'posts': 1, 'users': 2 }
 
 export default function Nav({ AppAPI, children }) {
   const { largeDevice, router } = AppAPI
@@ -30,8 +28,7 @@ export default function Nav({ AppAPI, children }) {
             button
             key="Posts"
             onClick={e => handleListItemClick(e, 1, '/posts')}
-            selected={navHighlight === 1}
-          >
+            selected={navHighlight === 1}>
             <ListItemIcon><NoteIcon /></ListItemIcon>
             <ListItemText primary="Posts"/>
           </ListItem>
@@ -39,8 +36,7 @@ export default function Nav({ AppAPI, children }) {
             button
             key="Users"
             onClick={e => handleListItemClick(e, 2, '/users')}
-            selected={navHighlight === 2}
-          >
+            selected={navHighlight === 2}>
             <ListItemIcon><PersonIcon /></ListItemIcon>
             <ListItemText primary="Users"/>
           </ListItem>
@@ -52,8 +48,7 @@ export default function Nav({ AppAPI, children }) {
           <BottomNavigation
             onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
             showLabels
-            value={navHighlight}
-          >
+            value={navHighlight}>
             <BottomNavigationAction icon={<WebIcon />} label="Feed" onClick={() => router.push('/feed')} />
             <BottomNavigationAction icon={<NoteIcon />} label="Posts" onClick={() => router.push('/posts')} />
             <BottomNavigationAction icon={<PersonIcon />} label="Users" onClick={() => router.push('/users')} />
@@ -63,10 +58,7 @@ export default function Nav({ AppAPI, children }) {
     </>
   )
 
-  function containerOffset() {
-    if (largeDevice) return '175px'
-    else return '0px'
-  }
+  function containerOffset() { return largeDevice ? '175px' : '0px' }
 
   function handleListItemClick(_e, label, href) {
     setNavHighlight(label)

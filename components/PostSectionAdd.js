@@ -25,11 +25,7 @@ export default function PostSectionAdd({ PostEditAPI, sectionIndex }) {
   function addPostSection(type) {
     setAnchorEl(null)
     const newPost = { ...post }
-    newPost.sections.splice(sectionIndex, 0, {
-      content: defaultSectionContent[type],
-      id: newId,
-      type
-    })
+    newPost.sections.splice(sectionIndex, 0, { content: defaultSectionContent[type], id: newId, type })
     setPost(newPost)
     setNewId(newId + 1)
   }

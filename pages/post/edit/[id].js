@@ -15,21 +15,18 @@ import PostSection from '../../../components/PostSection'
 import PostSectionAdd from '../../../components/PostSectionAdd'
 import PostSectionText from '../../../components/PostSectionText'
 
-export default function PostEdit({ AppAPI, initialPost }) {
+export default function PostEdit({ AppAPI, id, initialPost }) {
   const { midDevice, largeDevice, router } = AppAPI
   const [navHighlight, setNavHighlight] = useState(0)
   const [post, setPost] = useState(initialPost)
   const [newId, setNewId] = useState(Math.max(post.sections.map(s => s.id)) + 1)
+  const PostEditAPI = { newId, post, setNewId, setPost }
   const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
+  const containerStyle = { display: 'flex', height: containerHeight(), justifyContent: 'space-around' }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
   const editorSubContainerStyle = { ...subContainerStyle, ...editorShow, overflowY: 'scroll' }
-  const containerStyle = { display: 'flex', height: containerHeight(), justifyContent: 'space-around' }
-  const PostEditAPI = { newId, post, setNewId, setPost }
-
-  useEffect(() => {
-    if (post.sections[0].type === 'text') document.getElementsByClassName('public-DraftEditor-content')[0].focus()
-  }, [])
+  useEffect(() => { if (id === 'new') document.getElementsByClassName('public-DraftEditor-content')[0].focus() }, [])
 
   return (
     <>
@@ -40,8 +37,7 @@ export default function PostEdit({ AppAPI, initialPost }) {
             defaultValue={post.title}
             label="Title"
             onChange={e => setPost({ ...post, title: e.target.value })}
-            variant="filled"
-          />
+            variant="filled" />
           <IconButton edge="end" onClick={() => savePost()}><SaveIcon /></IconButton>
         </Toolbar>
       </AppBar>
@@ -66,8 +62,7 @@ export default function PostEdit({ AppAPI, initialPost }) {
           <BottomNavigation
               onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
               showLabels
-              value={navHighlight}
-          >
+              value={navHighlight}>
             <BottomNavigationAction icon={<EditIcon />} label="Edit" />
             <BottomNavigationAction icon={<PublishIcon />} label="Publish" />
           </BottomNavigation>
@@ -82,9 +77,7 @@ export default function PostEdit({ AppAPI, initialPost }) {
     else return 'calc(100vh - 112px)'
   }
 
-  function savePost() {
-    console.log('Saving post')
-  }
+  function savePost() { console.log('Saving post') }
 }
 
 export async function getServerSideProps({ req, query }) {
@@ -92,12 +85,8 @@ export async function getServerSideProps({ req, query }) {
   if (!session) return { redirect: { destination: '/api/auth/signin' } }
   const { id } = query
 
-  if (id === 'new') return { props: { initialPost: {
-    sections: [{
-        content: convertToRaw(EditorState.createEmpty().getCurrentContent()),
-        id: 0,
-        type: 'text'
-    }],
+  if (id === 'new') return { props: { id, initialPost: {
+    sections: [{ content: convertToRaw(EditorState.createEmpty().getCurrentContent()), id: 0, type: 'text' }],
     title: 'Untitled'
   }}}
 }

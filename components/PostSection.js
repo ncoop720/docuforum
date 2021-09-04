@@ -20,26 +20,22 @@ export default function PostSection({ children, PostEditAPI, sectionIndex }) {
           <Menu anchorEl={anchorEl} keepMounted onClose={() => setAnchorEl(null)} open={Boolean(anchorEl)}>
             <MenuItem
               disabled={sections.length <= 1 || sectionIndex === 0}
-              onClick={movePostSectionToTop}
-            >
+              onClick={movePostSectionToTop}>
               Move to Top
             </MenuItem>
             <MenuItem
               disabled={sections.length <= 1 || sectionIndex === 0}
-              onClick={movePostSectionUp}
-            >
+              onClick={movePostSectionUp}>
               Move Up
             </MenuItem>
             <MenuItem
               disabled={sections.length <= 1 || sectionIndex === sections.length - 1}
-              onClick={movePostSectionDown}
-            >
+              onClick={movePostSectionDown}>
               Move Down
             </MenuItem>
             <MenuItem
               disabled={sections.length <= 1 || sectionIndex === sections.length - 1}
-              onClick={movePostSectionToBottom}
-            >
+              onClick={movePostSectionToBottom}>
               Move to Bottom
             </MenuItem>
             <MenuItem disabled={sections.length <= 1} onClick={deletePostSection}>
