@@ -18,3 +18,7 @@ a {
 .MuiDrawer-paper {
   width: 175px;
 }
+
+.save-red {
+  color: red
+}

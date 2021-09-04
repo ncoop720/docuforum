@@ -24,16 +24,11 @@ export default function PostEdit({ AppAPI, initialPost }) {
   const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
   const editorSubContainerStyle = { ...subContainerStyle, ...editorShow, overflowY: 'scroll' }
-
-  const containerStyle = {
-    display: 'flex',
-    height: containerHeight(),
-    justifyContent: 'space-around'
-  }
+  const containerStyle = { display: 'flex', height: containerHeight(), justifyContent: 'space-around' }
+  const PostEditAPI = { newId, post, setNewId, setPost }
 
   useEffect(() => {
-    if (post.sections[0].type === 'text')
-      document.getElementsByClassName('public-DraftEditor-content')[0].focus()
+    if (post.sections[0].type === 'text') document.getElementsByClassName('public-DraftEditor-content')[0].focus()
   }, [])
 
   return (
@@ -46,7 +41,7 @@ export default function PostEdit({ AppAPI, initialPost }) {
           <TextField
             defaultValue={post.title}
             label="Title"
-            onChange={updateTitle}
+            onChange={e => setPost({ ...post, title: e.target.value })}
             variant="filled"
           />
           <IconButton edge="end" onClick={() => savePost()}>
@@ -56,44 +51,17 @@ export default function PostEdit({ AppAPI, initialPost }) {
       </AppBar>
       <div style={containerStyle}>
         <div id="editor-subcontainer" style={editorSubContainerStyle}>
-          {post.sections.map(({ id, type }, sectionIndex) => {
-            return (
-              <Fragment key={id}>
-                <PostSectionAdd
-                  newId={newId}
-                  post={post}
-                  sectionIndex={sectionIndex}
-                  setNewId={setNewId}
-                  setPost={setPost}
-                />
-                <PostSection
-                  post={post}
-                  sectionIndex={sectionIndex}
-                  sections={post.sections}
-                  setPost={setPost}
-                >
-                  {
-                    {
-                      'text': (
-                        <PostSectionText
-                          post={post}
-                          sectionIndex={sectionIndex}
-                          setPost={setPost}
-                        />
-                      )
-                    }[type]
-                  }
-                </PostSection>
-              </Fragment>
-            )
-          })}
-          <PostSectionAdd
-            newId={newId}
-            post={post}
-            sectionIndex={post.sections.length}
-            setNewId={setNewId}
-            setPost={setPost}
-          />
+          {post.sections.map(({ id, type }, sectionIndex) => { return (
+            <Fragment key={id}>
+              <PostSectionAdd PostEditAPI={PostEditAPI} sectionIndex={sectionIndex} />
+              <PostSection PostEditAPI={PostEditAPI} sectionIndex={sectionIndex}>
+                {{
+                  'text': <PostSectionText PostEditAPI={PostEditAPI} sectionIndex={sectionIndex} />
+                }[type]}
+              </PostSection>
+            </Fragment>
+          )})}
+          <PostSectionAdd PostEditAPI={PostEditAPI} sectionIndex={post.sections.length} />
         </div>
         <div id="preview-subcontainer" style={{ ...subContainerStyle, ...previewShow }} />
       </div>
@@ -120,12 +88,6 @@ export default function PostEdit({ AppAPI, initialPost }) {
 
   function savePost() {
     console.log('Saving post')
-  }
-
-  function updateTitle(e) {
-    const newPost = { ...post }
-    newPost.title = e.target.value
-    setPost(newPost)
   }
 }
 

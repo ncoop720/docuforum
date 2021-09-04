@@ -9,7 +9,8 @@ const defaultSectionContent = {
   'text': convertToRaw(EditorState.createEmpty().getCurrentContent())
 }
 
-export default function PostSectionAdd({ newId, post, sectionIndex, setNewId, setPost }) {
+export default function PostSectionAdd({ PostEditAPI, sectionIndex }) {
+  const { newId, post, setNewId, setPost } = PostEditAPI
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (

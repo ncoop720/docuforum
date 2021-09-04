@@ -6,7 +6,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import TextFieldsIcon from '@material-ui/icons/TextFields'
 import { useState } from 'react'
 
-export default function PostSection({ children, post, sectionIndex, sections, setPost }) {
+export default function PostSection({ children, PostEditAPI, sectionIndex }) {
+  const { post, setPost } = PostEditAPI
+  const { sections } = post
   const [anchorEl, setAnchorEl] = useState(null)
 
   return (
