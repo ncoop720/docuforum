@@ -14,19 +14,10 @@ export default function PostSection({ children, PostEditAPI, sectionIndex }) {
   return (
     <Card style={{ padding: '5px' }}>
       <div>
-        <div style={{ display: 'inline-block', lineHeight: '48px' }}>
-          <TextFieldsIcon />
-        </div>
+        <div style={{ display: 'inline-block', lineHeight: '48px' }}><TextFieldsIcon /></div>
         <div style={{ display: 'inline-block', float: 'right' }}>
-          <IconButton onClick={e => setAnchorEl(e.currentTarget)}>
-            <MoreVertIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            onClose={() => setAnchorEl(null)}
-            open={Boolean(anchorEl)}
-          >
+          <IconButton onClick={e => setAnchorEl(e.currentTarget)}><MoreVertIcon /></IconButton>
+          <Menu anchorEl={anchorEl} keepMounted onClose={() => setAnchorEl(null)} open={Boolean(anchorEl)}>
             <MenuItem
               disabled={sections.length <= 1 || sectionIndex === 0}
               onClick={movePostSectionToTop}
@@ -57,9 +48,7 @@ export default function PostSection({ children, PostEditAPI, sectionIndex }) {
           </Menu>
         </div>
       </div>
-      <div>
-        {children}
-      </div>
+      <div>{children}</div>
     </Card>
   )
 

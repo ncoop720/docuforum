@@ -15,15 +15,8 @@ export default function PostSectionAdd({ PostEditAPI, sectionIndex }) {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <IconButton onClick={e => setAnchorEl(e.currentTarget)}>
-        <MoreHorizIcon />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        keepMounted
-        onClose={() => setAnchorEl(null)}
-        open={Boolean(anchorEl)}
-      >
+      <IconButton onClick={e => setAnchorEl(e.currentTarget)}><MoreHorizIcon /></IconButton>
+      <Menu anchorEl={anchorEl} keepMounted onClose={() => setAnchorEl(null)} open={Boolean(anchorEl)}>
         <MenuItem onClick={() => addPostSection('text')}>Add Text</MenuItem>
       </Menu>
     </div>

@@ -18,26 +18,11 @@ export default function Nav({ AppAPI, children }) {
   const { largeDevice, router } = AppAPI
   const [navHighlight, setNavHighlight] = useState(navIndex[router.pathname.split('/')[1]])
 
-  function containerOffset() {
-    if (largeDevice) return '175px'
-    else return '0px'
-  }
-
-  function handleListItemClick(_e, label, href) {
-    setNavHighlight(label)
-    router.push(href)
-  }
-
   return (
     <>
       {largeDevice && (
         <Drawer variant="persistent" anchor="left" open={true}>
-          <ListItem
-            button
-            key="Feed"
-            onClick={e => handleListItemClick(e, 0, '/feed')}
-            selected={navHighlight === 0}
-          >
+          <ListItem button key="Feed" onClick={e => handleListItemClick(e, 0, '/feed')}selected={navHighlight === 0}>
             <ListItemIcon><WebIcon /></ListItemIcon>
             <ListItemText primary="Feed"/>
           </ListItem>
@@ -61,9 +46,7 @@ export default function Nav({ AppAPI, children }) {
           </ListItem>
         </Drawer>
       )}
-      <div style={{ marginLeft: containerOffset() }}>
-        {children}
-      </div>
+      <div style={{ marginLeft: containerOffset() }}>{children}</div>
       {!largeDevice && (
         <AppBar position="fixed" style={{ top: 'auto', bottom: 0 }}>
           <BottomNavigation
@@ -71,24 +54,22 @@ export default function Nav({ AppAPI, children }) {
             showLabels
             value={navHighlight}
           >
-            <BottomNavigationAction
-              icon={<WebIcon />}
-              label="Feed"
-              onClick={() => router.push('/feed')}
-            />
-            <BottomNavigationAction
-              icon={<NoteIcon />}
-              label="Posts"
-              onClick={() => router.push('/posts')}
-            />
-            <BottomNavigationAction
-              icon={<PersonIcon />}
-              label="Users"
-              onClick={() => router.push('/users')}
-            />
+            <BottomNavigationAction icon={<WebIcon />} label="Feed" onClick={() => router.push('/feed')} />
+            <BottomNavigationAction icon={<NoteIcon />} label="Posts" onClick={() => router.push('/posts')} />
+            <BottomNavigationAction icon={<PersonIcon />} label="Users" onClick={() => router.push('/users')} />
           </BottomNavigation>
         </AppBar>
       )}
     </>
   )
+
+  function containerOffset() {
+    if (largeDevice) return '175px'
+    else return '0px'
+  }
+
+  function handleListItemClick(_e, label, href) {
+    setNavHighlight(label)
+    router.push(href)
+  }
 }

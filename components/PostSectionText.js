@@ -7,18 +7,12 @@ export default function PostSectionText({ PostEditAPI, sectionIndex }) {
     EditorState.createWithContent(convertFromRaw(post.sections[sectionIndex].content))
   )
 
+  return <Editor editorKey="editor" editorState={editorState} onChange={newContent => updateContent(newContent)} />
+
   function updateContent(newContent) {
     setEditorState(newContent)
     const newPost = { ...post }
     newPost.sections[sectionIndex].content = convertToRaw(newContent.getCurrentContent())
     setPost(newPost)
   }
-
-  return (
-    <Editor
-      editorKey="editor"
-      editorState={editorState}
-      onChange={newContent => updateContent(newContent)}
-    />
-  )
 }

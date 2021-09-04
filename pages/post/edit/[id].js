@@ -35,18 +35,14 @@ export default function PostEdit({ AppAPI, initialPost }) {
     <>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton edge="start" onClick={() => router.back()}>
-            <KeyboardBackspaceIcon />
-          </IconButton>
+          <IconButton edge="start" onClick={() => router.back()}><KeyboardBackspaceIcon /></IconButton>
           <TextField
             defaultValue={post.title}
             label="Title"
             onChange={e => setPost({ ...post, title: e.target.value })}
             variant="filled"
           />
-          <IconButton edge="end" onClick={() => savePost()}>
-            <SaveIcon />
-          </IconButton>
+          <IconButton edge="end" onClick={() => savePost()}><SaveIcon /></IconButton>
         </Toolbar>
       </AppBar>
       <div style={containerStyle}>
