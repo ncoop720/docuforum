@@ -9,6 +9,7 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import PublishIcon from '@material-ui/icons/Publish'
 import SaveIcon from '@material-ui/icons/Save'
 import { convertToRaw, EditorState } from 'draft-js'
+import _, { initial } from 'lodash'
 import { getSession } from 'next-auth/client'
 import { Fragment, useEffect, useState } from 'react'
 import PostSection from '../../../components/PostSection'
@@ -18,16 +19,16 @@ import PostSectionText from '../../../components/PostSectionText'
 export default function PostEdit({ AppAPI, initialPost }) {
   const { midDevice, largeDevice, router } = AppAPI
   const [navHighlight, setNavHighlight] = useState(0)
-  const [post, setPost] = useState(initialPost)
+  const [canSave, setCanSave] = useState(false)
+  const [post, setPost] = useState(_.cloneDeep(initialPost))
   const { sections, title } = post
   const maxPostSectionId = Math.max(...sections.map(s => s.id))
   const [newId, setNewId] = useState(maxPostSectionId + 1)
-  const PostEditAPI = { newId, post, setNewId, setPost }
-  const editorShow = (largeDevice || navHighlight === 0) ? {} : { display: 'none' }
-  const previewShow = (largeDevice || navHighlight === 1) ? {} : { display: 'none' }
-  const containerStyle = { display: 'flex', height: containerHeight(), justifyContent: 'space-around' }
+  const PostEditAPI = { canSave, newId, post, setCanSave, setNewId, setPost }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
-  const editorSubContainerStyle = { ...subContainerStyle, ...editorShow, overflowY: 'scroll' }
+  const editorStyle = { display: (largeDevice || navHighlight === 0) ? 'block' : 'none', overflowY: 'auto' }
+  const previewStyle = { display: (largeDevice || navHighlight === 1) ? 'block' : 'none' }
+  let postChanged = !_.isEqual(initialPost, post)
 
   useEffect(() => {
     const sectionToFocus = sections.filter(section => section.id === maxPostSectionId)[0]
@@ -45,11 +46,13 @@ export default function PostEdit({ AppAPI, initialPost }) {
             label="Title"
             onChange={e => setPost({ ...post, title: e.target.value })}
             variant="filled" />
-          <IconButton edge="end" onClick={() => savePost()}><SaveIcon /></IconButton>
+          <IconButton edge="end" onClick={() => savePost()}>
+            <SaveIcon className={postChanged ? 'save-red' : ''} />
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <div style={containerStyle}>
-        <div id="editor-subcontainer" style={editorSubContainerStyle}>
+      <div style={{ display: 'flex', height: containerHeight(), justifyContent: 'space-around' }}>
+        <div style={{ ...editorStyle, ...subContainerStyle }}>
           {sections.map(({ id, type }, sectionIndex) => { return (
             <Fragment key={id}>
               <PostSectionAdd PostEditAPI={PostEditAPI} sectionIndex={sectionIndex} />
@@ -62,14 +65,14 @@ export default function PostEdit({ AppAPI, initialPost }) {
           )})}
           <PostSectionAdd PostEditAPI={PostEditAPI} sectionIndex={sections.length} />
         </div>
-        <div id="preview-subcontainer" style={{ ...subContainerStyle, ...previewShow }} />
+        <div style={{ ...previewStyle, ...subContainerStyle }} />
       </div>
       {!largeDevice && (
         <AppBar position="fixed" style={{ bottom: 0, top: 'auto' }}>
           <BottomNavigation
-              onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
-              showLabels
-              value={navHighlight}>
+            onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
+            showLabels
+            value={navHighlight}>
             <BottomNavigationAction icon={<EditIcon />} label="Edit" />
             <BottomNavigationAction icon={<PublishIcon />} label="Publish" />
           </BottomNavigation>
