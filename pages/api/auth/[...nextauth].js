@@ -23,5 +23,11 @@ export default NextAuth({
     password: process.env.PG_PASS,
     database: process.env.PG_DB,
     ssl: { rejectUnauthorized: false }
+  },
+  callbacks: {
+    session: async (session, user) => {
+      session.id = user.id
+      return Promise.resolve(session)
+    }
   }
 })

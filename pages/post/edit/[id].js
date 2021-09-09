@@ -8,8 +8,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace'
 import PublishIcon from '@material-ui/icons/Publish'
 import SaveIcon from '@material-ui/icons/Save'
-import { convertToRaw, EditorState } from 'draft-js'
-import _, { initial } from 'lodash'
+import _ from 'lodash'
 import { getSession } from 'next-auth/client'
 import { Fragment, useEffect, useState } from 'react'
 import PostSection from '../../../components/PostSection'
@@ -95,8 +94,13 @@ export async function getServerSideProps({ req, query }) {
   if (!session) return { redirect: { destination: '/api/auth/signin' } }
   const { id } = query
 
-  if (id === 'new') return { props: { initialPost: {
-    sections: [{ content: convertToRaw(EditorState.createEmpty().getCurrentContent()), id: 0, type: 'text' }],
-    title: 'Untitled'
-  }}}
+  if (id === 'new') {
+    const res = await fetch(`${process.env.API_URL}/api/post/create`, { headers: { cookie: req.headers.cookie } })
+    const { post } = await res.json()
+    return { redirect: { destination: `/post/edit/${post.id}` } }
+  } else {
+    const res = await fetch(`${process.env.API_URL}/api/post/${id}`)
+    const { post } = await res.json()
+    return post && post.user_id === session.id ? { props: { initialPost: post } } : { notFound: true }
+  }
 }
