@@ -14,20 +14,21 @@ import { Fragment, useEffect, useState } from 'react'
 import PostSection from '../../../components/PostSection'
 import PostSectionAdd from '../../../components/PostSectionAdd'
 import PostSectionText from '../../../components/PostSectionText'
+import apiURL from '../../../util/api-url'
 
 export default function PostEdit({ AppAPI, initialPost }) {
   const { midDevice, largeDevice, router } = AppAPI
   const [navHighlight, setNavHighlight] = useState(0)
-  const [canSave, setCanSave] = useState(false)
+  const [initialPostCopy, setInitialPostCopy] = useState(initialPost)
   const [post, setPost] = useState(_.cloneDeep(initialPost))
-  const { sections, title } = post
+  const { id, sections, title } = post
   const maxPostSectionId = Math.max(...sections.map(s => s.id))
   const [newId, setNewId] = useState(maxPostSectionId + 1)
-  const PostEditAPI = { canSave, newId, post, setCanSave, setNewId, setPost }
+  const PostEditAPI = { newId, post, setNewId, setPost }
   const subContainerStyle = { padding: '5px', width: largeDevice ? '50%' : '100%' }
   const editorStyle = { display: (largeDevice || navHighlight === 0) ? 'block' : 'none', overflowY: 'auto' }
   const previewStyle = { display: (largeDevice || navHighlight === 1) ? 'block' : 'none' }
-  let postChanged = !_.isEqual(initialPost, post)
+  const postChanged = !_.isEqual(initialPostCopy, post)
 
   useEffect(() => {
     const sectionToFocus = sections.filter(section => section.id === maxPostSectionId)[0]
@@ -86,7 +87,10 @@ export default function PostEdit({ AppAPI, initialPost }) {
     else return 'calc(100vh - 112px)'
   }
 
-  function savePost() { console.log('Saving post') }
+  async function savePost() {
+    await fetch(`${apiURL}/api/post/${id}`, { body: JSON.stringify(post), method: 'PUT' })
+    setInitialPostCopy(_.cloneDeep(post))
+  }
 }
 
 export async function getServerSideProps({ req, query }) {
@@ -95,11 +99,11 @@ export async function getServerSideProps({ req, query }) {
   const { id } = query
 
   if (id === 'new') {
-    const res = await fetch(`${process.env.API_URL}/api/post/create`, { headers: { cookie: req.headers.cookie } })
+    const res = await fetch(`${apiURL}/api/post/create`, { headers: { cookie: req.headers.cookie } })
     const { post } = await res.json()
     return { redirect: { destination: `/post/edit/${post.id}` } }
   } else {
-    const res = await fetch(`${process.env.API_URL}/api/post/${id}`)
+    const res = await fetch(`${apiURL}/api/post/${id}`)
     const { post } = await res.json()
     return post && post.user_id === session.id ? { props: { initialPost: post } } : { notFound: true }
   }
