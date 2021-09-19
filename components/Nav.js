@@ -8,50 +8,39 @@ import ListItemText from '@material-ui/core/ListItemText'
 import NoteIcon from '@material-ui/icons/Note'
 import PersonIcon from '@material-ui/icons/Person'
 import WebIcon from '@material-ui/icons/Web'
-import { useState } from 'react'
-
-const navIndex = { 'feed': 0, 'post': 1, 'posts': 1, 'users': 2 }
+import { useState, useEffect } from 'react'
 
 export default function Nav({ AppAPI, children }) {
   const { largeDevice, router } = AppAPI
-  const [navHighlight, setNavHighlight] = useState(navIndex[router.pathname.split('/')[1]])
+  const [page, setPage] = useState(null)
+
+  useEffect(() => { setPage(parseInt(router.query.page) || 0) }, [router.query.page])
 
   return (
     <>
       {largeDevice && (
         <Drawer variant="persistent" anchor="left" open={true}>
-          <ListItem button key="Feed" onClick={e => handleListItemClick(e, 0, '/feed')}selected={navHighlight === 0}>
+          <ListItem button key="Feed" onClick={() => setPage(0)} selected={page === 0}>
             <ListItemIcon><WebIcon /></ListItemIcon>
             <ListItemText primary="Feed"/>
           </ListItem>
-          <ListItem
-            button
-            key="Posts"
-            onClick={e => handleListItemClick(e, 1, '/posts')}
-            selected={navHighlight === 1}>
+          <ListItem button key="Posts" onClick={() => setPage(1)} selected={page === 1}>
             <ListItemIcon><NoteIcon /></ListItemIcon>
             <ListItemText primary="Posts"/>
           </ListItem>
-          <ListItem
-            button
-            key="Users"
-            onClick={e => handleListItemClick(e, 2, '/users')}
-            selected={navHighlight === 2}>
+          <ListItem button key="Users" onClick={() => setPage(2)} selected={page === 2}>
             <ListItemIcon><PersonIcon /></ListItemIcon>
             <ListItemText primary="Users"/>
           </ListItem>
         </Drawer>
       )}
-      <div style={{ marginLeft: containerOffset() }}>{children}</div>
+      <div style={{ marginLeft: containerOffset() }}>{children[page]}</div>
       {!largeDevice && (
         <AppBar position="fixed" style={{ top: 'auto', bottom: 0 }}>
-          <BottomNavigation
-            onChange={(_e, newNavHighlight) => setNavHighlight(newNavHighlight)}
-            showLabels
-            value={navHighlight}>
-            <BottomNavigationAction icon={<WebIcon />} label="Feed" onClick={() => router.push('/feed')} />
-            <BottomNavigationAction icon={<NoteIcon />} label="Posts" onClick={() => router.push('/posts')} />
-            <BottomNavigationAction icon={<PersonIcon />} label="Users" onClick={() => router.push('/users')} />
+          <BottomNavigation showLabels value={page}>
+            <BottomNavigationAction icon={<WebIcon />} label="Feed" onClick={() => setPage(0)} />
+            <BottomNavigationAction icon={<NoteIcon />} label="Posts" onClick={() =>setPage(1)} />
+            <BottomNavigationAction icon={<PersonIcon />} label="Users" onClick={() => setPage(2)} />
           </BottomNavigation>
         </AppBar>
       )}
@@ -59,9 +48,4 @@ export default function Nav({ AppAPI, children }) {
   )
 
   function containerOffset() { return largeDevice ? '175px' : '0px' }
-
-  function handleListItemClick(_e, label, href) {
-    setNavHighlight(label)
-    router.push(href)
-  }
 }

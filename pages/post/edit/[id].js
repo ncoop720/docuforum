@@ -40,7 +40,9 @@ export default function PostEdit({ AppAPI, initialPost }) {
     <>
       <AppBar position="sticky">
         <Toolbar>
-          <IconButton edge="start" onClick={() => router.back()}><KeyboardBackspaceIcon /></IconButton>
+          <IconButton edge="start" onClick={() => router.push({ pathname: '/', query: { page: '1' } })}>
+            <KeyboardBackspaceIcon />
+          </IconButton>
           <TextField
             defaultValue={title}
             label="Title"
