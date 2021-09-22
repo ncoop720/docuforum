@@ -103,7 +103,7 @@ export async function getServerSideProps({ req, query }) {
   if (id === 'new') {
     const res = await fetch(`${apiURL}/api/post/create`, { headers: { cookie: req.headers.cookie } })
     const { post } = await res.json()
-    return { redirect: { destination: `/post/edit/${post.id}` } }
+    return post && post.user_id === session.id ? { props: { initialPost: post } } : { notFound: true }
   } else {
     const res = await fetch(`${apiURL}/api/post/${id}`)
     const { post } = await res.json()

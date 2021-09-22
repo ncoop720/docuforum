@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     }])
 
     const data = await db.query(
-      'INSERT INTO posts (user_id, title, sections) VALUES ($1, $2, $3) RETURNING id',
+      'INSERT INTO posts (user_id, title, sections) VALUES ($1, $2, $3) RETURNING *',
       [session.id, 'Untitled', defaultSections]
     )
 
